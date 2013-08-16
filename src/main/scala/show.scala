@@ -12,11 +12,11 @@ object Show {
           text
         case Conflict(Change(or, oc),
                       Change(tr, tc)) =>
-          """<<<<<< %s
+          """<<<<<<< %s
           |%s
-          |======
+          |=======
           |%s
-          |>>>>>> %s""".stripMargin.format(
+          |>>>>>>> %s""".stripMargin.format(
             or, oc, tc, tr
           )
       }.mkString("")
