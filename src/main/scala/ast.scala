@@ -5,15 +5,10 @@ case class Text(str: String) extends Content
 case class Change(ref: String, content: String)
 case class Conflict(ours: Change, theirs: Change) extends Content {
   def divergePoint =
-    ours.content.zip(theirs.content)
-      .takeWhile({ case (o, t) => o == t })
-      .size - 1
+    ours.content.zip(theirs.content).indexWhere { case (a, b) => a != b }
 }
 
 case class Contents(contents: Seq[Content]) {
-  lazy val conflicts: List[Conflict] =
-    (List.empty[Conflict] /: contents) {
-      case (cx, c: Conflict) => c :: cx
-      case (cx, _) => cx
-    }.reverse
+  lazy val conflicts: Seq[Conflict] =
+    contents.collect { case c: Conflict => c }
 }
